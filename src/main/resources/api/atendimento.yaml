@@ -13,21 +13,304 @@ servers:
 
 tags:
   - name: Atendimento
-    description: all about Products
+    description: Todo sobre atendimento
+  - name: Historico
+    description: Todo sobre historico do paciente
 
 paths:
-  /hola:
-    get:
+  /atendimento/login:
+    post:
       tags:
         - Atendimento
-      summary: Diz ola
-      description: Retorna ola
-      operationId: hola
+      summary: Realiza o login
+      description: Dado as credenciais de um usuario, retorna o token de acesso
+      operationId: realizaLogin
+      requestBody:
+        description: Credenciais do usuario
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
       responses:
         '200':
-          description: Successful operation
+          description: Operação bem-sucedida
           content:
             application/json:
               schema:
-                type: string
-                example: ola
+                $ref: '#/components/schemas/TokenResponse'
+        '401':
+          description: Não autorizado
+  /atendimento/iniciar:
+    get:
+      tags:
+        - Atendimento
+      summary: Inicia o atendimento
+      description: Inicia o processo de atendimento
+      operationId: iniciarAtendimento
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnidadePaginadaResponse'
+        '401':
+          description: Não autorizado
+  /atendimento/enfermidade:
+    get:
+      tags:
+        - Atendimento
+      summary: Consulta enfermidades
+      description: Consulta os tipos de enfermidades
+      operationId: consultarEnfermidade
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnfermidadeResponse'
+        '401':
+          description: Não autorizado
+  /atendimento/registrar:
+    post:
+      tags:
+        - Atendimento
+      summary: Registra enfermidade do paciente
+      description: Registra a enfermidade do paciente para dar inicio ao processo de triagem
+      operationId: registrarEnfermidade
+      requestBody:
+        description: Credenciais do usuario
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrarEnfermidadeRequest'
+        required: true
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistrarEnfermidadeResponse'
+        '401':
+          description: Não autorizado
+  /atendimento/confirmar/chegada:
+    get:
+      tags:
+        - Atendimento
+      summary: Confirmar chegada na unidade
+      description: confirma qeu chegou na unidade e vai ser atendido pelo médico
+      operationId: confirmarChegada
+      parameters:
+        - name: idAtendimento
+          in: query
+          description: ID do atendimento
+          required: true
+          example: 2e84348b-953f-4d3c-a0ef-3e5e31a693cb
+          schema:
+            type: string
+      responses:
+        '202':
+          description: confirmação de chegada
+        '401':
+          description: Não autorizado
+  /atendimento/finalizar:
+    post:
+      tags:
+        - Atendimento
+      summary: Finaliza o atendimento
+      description: finaliza o atendimento do paciente finalizando sua ficha e gerando o historico
+      operationId: finalizarAtendimento
+      requestBody:
+        description: Credenciais do medido e do atendimento
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FinalizarAtendimentoRequest'
+      responses:
+        '202':
+          description: finalizado
+        '401':
+          description: Não autorizado
+  /atendimento/avalicao:
+    post:
+      tags:
+        - Atendimento
+      summary: Avaliar o atendimento
+      description: Paciente realiza a avaliação do atendimento
+      operationId: avaliarAtendimento
+      requestBody:
+        description: Dados da avaliação
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AvaliacaoRequest'
+      responses:
+        '202':
+          description: finalizado
+        '401':
+          description: Não autorizado
+
+  /atendimento/historico:
+    get:
+      tags:
+        - Historico
+      summary: Realiza consulta do historico
+      description: Retorna o historico do paciente ou histórico de atendimento do médico
+      operationId: consultarHistorico
+      parameters:
+        - name: idPaciente
+          in: query
+          description: ID do paciente
+          required: false
+          example: 2e84348b-953f-4d3c-a0ef-3e5e31a693cb
+          schema:
+            type: string
+        - name: idMedico
+          in: query
+          description: ID do médico
+          required: false
+          example: 2e84348b-953f-4d3c-a0ef-3e5e31a693cb
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '401':
+          description: Não autorizado
+      x-codegen-request-validator:
+        oneOf:
+          - required:
+              - idPaciente
+          - required:
+              - idMedico
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: email do usuário
+          example: usuario@email.com
+        senha:
+          type: string
+          description: senha do usuário
+          example: senha123
+    TokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: token do usuário
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+    UnidadeResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id da unidade
+          example: 2e84348b-953f-4d3c-a0ef-3e5e31a693cb
+        nome:
+          type: string
+          description: nome da unidade
+          example: Postinho
+    EnfermidadeRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id da enfermidade
+          example: Resfriado
+        comentario:
+          type: string
+          description: comentario sobre a enfermidade
+          example: Resfriado a 3 dias
+    EnfermidadeResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id da enfermidade
+          example: Resfriado
+    UnidadePaginadaResponse:
+      type: object
+      properties:
+        pagina:
+          type: integer
+          example: 1
+        porPagina:
+          type: integer
+          example: 10
+        total:
+          type: integer
+          format: int64
+          example: 100
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnidadeResponse"
+    RegistrarEnfermidadeRequest:
+      type: object
+      properties:
+        idUnidade:
+          type: string
+          description: id da unidade
+          example: 2e84348b-953f-4d3c-a0ef-3e5e31a693cb
+        enfermidades:
+          type: array
+          items:
+            $ref: "#/components/schemas/EnfermidadeRequest"
+    RegistrarEnfermidadeResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id do atendimento
+          example: 2e84348b-953f-4d3c-a0ef-3e5e31a693cb
+        numero:
+          type: integer
+          description: seu numero na fila de atendimento
+          example: 99
+    FinalizarAtendimentoRequest:
+      type: object
+      properties:
+        idAtendimento:
+          type: string
+          description: id do atendimento
+          example: 2e84348b-953f-4d3c-a0ef-3e5e31a693cb
+        idMedico:
+          type: string
+          description: id do medico
+          example: 2e84348b-953f-4d3c-a0ef-3e5e31a693cb
+        comentario:
+          type: string
+          description: comentario sobre atendimento
+          example: receitei que fique em casa e tome um antigripal
+    AvaliacaoRequest:
+      type: object
+      properties:
+        idAtendimento:
+          type: string
+          description: id do atendimento
+          example: 2e84348b-953f-4d3c-a0ef-3e5e31a693cb
+        nota:
+          type: integer
+          description: nota do atendimento
+          example: 2
+          minimum: 1
+          maximum: 5
+        comentario:
+          type: string
+          description: comentario sobre avaliação
+          example: medico muito ruim não me deu atenção
