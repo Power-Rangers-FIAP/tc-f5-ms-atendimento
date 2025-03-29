@@ -5,5 +5,6 @@ public enum Enfermidade {
     HIPERTENSAO,
     ASMA,
     BRONQUITE,
+    RESFRIADO,
     OUTRA
 }

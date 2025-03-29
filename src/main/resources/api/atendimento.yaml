@@ -48,6 +48,23 @@ paths:
       summary: Inicia o atendimento
       description: Inicia o processo de atendimento
       operationId: iniciarAtendimento
+      parameters:
+        - name: pagina
+          in: query
+          description: Número da página
+          required: false
+          schema:
+            type: integer
+            default: 0
+            example: 1
+        - name: porPagina
+          in: query
+          description: Número de itens por página
+          required: false
+          schema:
+            type: integer
+            default: 10
+            example: 10
       responses:
         '200':
           description: Operação bem-sucedida
@@ -163,6 +180,22 @@ paths:
       description: Retorna o historico do paciente ou histórico de atendimento do médico
       operationId: consultarHistorico
       parameters:
+        - name: pagina
+          in: query
+          description: Número da página
+          required: false
+          schema:
+            type: integer
+            default: 0
+            example: 1
+        - name: porPagina
+          in: query
+          description: Número de itens por página
+          required: false
+          schema:
+            type: integer
+            default: 10
+            example: 10
         - name: idPaciente
           in: query
           description: ID do paciente
@@ -183,7 +216,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TokenResponse'
+                $ref: '#/components/schemas/HistoricoPaginadaResponse'
+        '400':
+          description: Requisição mal sucedida
         '401':
           description: Não autorizado
       x-codegen-request-validator:
@@ -231,7 +266,7 @@ components:
         id:
           type: string
           description: id da enfermidade
-          example: Resfriado
+          example: RESFRIADO
         comentario:
           type: string
           description: comentario sobre a enfermidade
@@ -242,7 +277,7 @@ components:
         id:
           type: string
           description: id da enfermidade
-          example: Resfriado
+          example: RESFRIADO
     UnidadePaginadaResponse:
       type: object
       properties:
@@ -314,3 +349,27 @@ components:
           type: string
           description: comentario sobre avaliação
           example: medico muito ruim não me deu atenção
+    HistoricoResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id do historico
+          example: 2e84348b-953f-4d3c-a0ef-3e5e31a693cb
+    HistoricoPaginadaResponse:
+      type: object
+      properties:
+        pagina:
+          type: integer
+          example: 1
+        porPagina:
+          type: integer
+          example: 10
+        total:
+          type: integer
+          format: int64
+          example: 100
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/HistoricoResponse"

@@ -6,19 +6,22 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Document
-public class RegistroEnfermidade {
+@Builder
+public class RegistroEnfermidadeEntity { //FIXME: atribuir um nome melhor
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Enumerated(EnumType.STRING)
-    private Enfermidade enfermidade;
+    private List<Enfermidade> enfermidade;
 
     private String observacao;
 
