@@ -1,6 +1,5 @@
 package br.com.powerprogramers.atendimento.entity;
 
-import br.com.powerprogramers.atendimento.domain.Historico;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.OneToOne;
@@ -9,7 +8,7 @@ import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+@Document(collation = "avaliacao")
 @Builder
 @Getter
 public class AvaliacaoEntity {

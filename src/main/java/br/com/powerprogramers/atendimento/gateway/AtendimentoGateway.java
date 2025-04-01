@@ -1,7 +1,8 @@
 package br.com.powerprogramers.atendimento.gateway;
 
+import br.com.powerprogramers.atendimento.domain.Atendimento;
 import br.com.powerprogramers.atendimento.domain.FinalizarAtendimento;
-import br.com.powerprogramers.atendimento.domain.RegistrarEnfermidade;
+import br.com.powerprogramers.atendimento.domain.RegistrarAtendimento;
 import br.com.powerprogramers.atendimento.entity.AtendimentoEntity;
 import br.com.powerprogramers.atendimento.entity.AvaliacaoEntity;
 
@@ -15,6 +16,6 @@ public interface AtendimentoGateway {
 
     void finalizarAtendimento(FinalizarAtendimento finalizarAtendimento);
 
-    RegistrarEnfermidade registrarEnfermidade(RegistrarEnfermidade registrarEnfermidade);
+    Atendimento registrarEnfermidade(RegistrarAtendimento registrarEnfermidade);
 
 }

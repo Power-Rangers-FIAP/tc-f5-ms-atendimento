@@ -1,10 +1,11 @@
 package br.com.powerprogramers.atendimento.usecase;
 
-import br.com.powerprogramers.atendimento.domain.RegistrarEnfermidade;
+import br.com.powerprogramers.atendimento.domain.Atendimento;
+import br.com.powerprogramers.atendimento.domain.RegistrarAtendimento;
 
-public interface RegistrarEnfermidadeUseCase extends UseCase<RegistrarEnfermidade, RegistrarEnfermidade> {
+public interface RegistrarEnfermidadeUseCase extends UseCase<RegistrarAtendimento, Atendimento> {
 
     @Override
-    RegistrarEnfermidade execute(RegistrarEnfermidade input);
+    Atendimento execute(RegistrarAtendimento input);
 
 }

@@ -1,7 +1,9 @@
 package br.com.powerprogramers.atendimento.entity;
 
-import br.com.powerprogramers.atendimento.domain.Avaliacao;
+import br.com.powerprogramers.atendimento.domain.Atendimento;
+import br.com.powerprogramers.atendimento.domain.EnfermidadeRequest;
 import br.com.powerprogramers.atendimento.domain.Historico;
+import br.com.powerprogramers.atendimento.domain.enums.Enfermidade;
 import br.com.powerprogramers.atendimento.domain.enums.StatusAtendimento;
 import br.com.powerprogramers.atendimento.mapper.AtendimentoMapper;
 import jakarta.persistence.EnumType;
@@ -9,14 +11,21 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Document
+@Document(collation = "atendimento")
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AtendimentoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -37,7 +46,12 @@ public class AtendimentoEntity {
     @Enumerated(EnumType.STRING)
     private StatusAtendimento status;
 
+    @Enumerated(EnumType.STRING)
+    private List<EnfermidadeRequest> enfermidade;
+
     private String comentario;
+
+    private Integer numero;
 
     public void atribuirMedico(String medicoId) {
         this.medicoId = medicoId;
@@ -47,7 +61,18 @@ public class AtendimentoEntity {
         this.medicoId = comentario;
     }
 
-    public static Historico toHistorico(final AtendimentoEntity entity) {
-        return AtendimentoMapper.INSTANCE.toDomain(entity);
+    public static AtendimentoEntity from(final Atendimento atendimento) {
+        return AtendimentoEntity.builder()
+                .id(atendimento.id())
+                .pacienteId(atendimento.idPaciente())
+                .medicoId(atendimento.idMedico())
+                .unidadeId(atendimento.idUnidade())
+                .dataHoraInicio(atendimento.dataHoraInicio())
+                .dataHoraFim(atendimento.dataHoraFim())
+                .status(atendimento.status())
+                .enfermidade(atendimento.enfermidade())
+                .comentario(atendimento.comentario())
+                .numero(atendimento.numero())
+                .build();
     }
 }

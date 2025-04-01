@@ -1,12 +1,12 @@
 package br.com.powerprogramers.atendimento.mapper;
 
+import br.com.powerprogramers.atendimento.domain.Atendimento;
 import br.com.powerprogramers.atendimento.domain.Avaliacao;
 import br.com.powerprogramers.atendimento.domain.ConsultarHistorico;
-import br.com.powerprogramers.atendimento.domain.EnfermidadeRequest;
 import br.com.powerprogramers.atendimento.domain.FinalizarAtendimento;
 import br.com.powerprogramers.atendimento.domain.Historico;
 import br.com.powerprogramers.atendimento.domain.Login;
-import br.com.powerprogramers.atendimento.domain.RegistrarEnfermidade;
+import br.com.powerprogramers.atendimento.domain.RegistrarAtendimento;
 import br.com.powerprogramers.atendimento.domain.Token;
 import br.com.powerprogramers.atendimento.domain.Unidade;
 import br.com.powerprogramers.atendimento.domain.dto.AvaliacaoRequestDto;
@@ -20,7 +20,6 @@ import br.com.powerprogramers.atendimento.domain.dto.TokenResponseDto;
 import br.com.powerprogramers.atendimento.domain.dto.UnidadeResponseDto;
 import br.com.powerprogramers.atendimento.domain.enums.Enfermidade;
 import br.com.powerprogramers.atendimento.entity.AtendimentoEntity;
-import br.com.powerprogramers.atendimento.entity.RegistroEnfermidadeEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -38,11 +37,11 @@ public interface AtendimentoMapper {
 
     ConsultarHistorico toDomain(int pagina, int porPagina, String idPaciente, String idMedico);
 
-    RegistrarEnfermidade toDomain(RegistrarEnfermidadeRequestDto dto);
+    RegistrarAtendimento toDomain(RegistrarEnfermidadeRequestDto dto);
 
-    Historico toDomain(AtendimentoEntity entity);
+    Atendimento toDomain(AtendimentoEntity entity);
 
-    RegistrarEnfermidade toDomain(RegistroEnfermidadeEntity entity);
+    Historico toDomain(Atendimento entity);
 
     TokenResponseDto toDto(Token domain);
 
@@ -53,6 +52,6 @@ public interface AtendimentoMapper {
 
     UnidadeResponseDto toDto(Unidade domain);
 
-    RegistrarEnfermidadeResponseDto toDto(RegistrarEnfermidade domain);
+    RegistrarEnfermidadeResponseDto toDto(Atendimento domain);
 
 }

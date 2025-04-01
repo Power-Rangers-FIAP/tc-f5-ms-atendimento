@@ -1,8 +1,10 @@
 package br.com.powerprogramers.atendimento.gateway.impl;
 
+import br.com.powerprogramers.atendimento.domain.Atendimento;
 import br.com.powerprogramers.atendimento.domain.ConsultarHistorico;
 import br.com.powerprogramers.atendimento.entity.AtendimentoEntity;
 import br.com.powerprogramers.atendimento.gateway.HistoricoGateway;
+import br.com.powerprogramers.atendimento.mapper.AtendimentoMapper;
 import br.com.powerprogramers.atendimento.repository.AtendimentoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,7 +18,7 @@ public class HistoricoGatewayImpl implements HistoricoGateway {
     private final AtendimentoRepository atendimentoRepository;
 
     @Override
-    public Page<AtendimentoEntity> consultarHistorico(ConsultarHistorico input) {
+    public Page<Atendimento> consultarHistorico(ConsultarHistorico input) {
         var pageable = PageRequest.of(input.pagina(), input.porPagina());
 
         Page<AtendimentoEntity> atedimentos = null;
@@ -27,6 +29,6 @@ public class HistoricoGatewayImpl implements HistoricoGateway {
             atedimentos = this.atendimentoRepository.findByMedicoId(pageable, input.idMedico());
         }
 
-        return atedimentos;
+        return atedimentos.map(AtendimentoMapper.INSTANCE::toDomain);
     }
 }

@@ -15,9 +15,6 @@ public class RealizarLoginUseCaseImpl implements RealizarLoginUseCase {
 
     @Override
     public Token execute(Login input) {
-
-        loginGateway.realizarLogin(input);
-
-        return null; //FIXME ajustar retorno depois do MS de login finalizado
+        return loginGateway.realizarLogin(input);
     }
 }

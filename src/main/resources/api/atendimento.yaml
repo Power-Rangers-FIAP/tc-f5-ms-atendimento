@@ -302,6 +302,10 @@ components:
           type: string
           description: id da unidade
           example: 2e84348b-953f-4d3c-a0ef-3e5e31a693cb
+        idPaciente:
+          type: string
+          description: id do paciente
+          example: 2e84348b-953f-4d3c-a0ef-3e5e31a693cb
         enfermidades:
           type: array
           items:

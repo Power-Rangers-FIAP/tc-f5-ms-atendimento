@@ -5,6 +5,7 @@ import br.com.powerprogramers.atendimento.domain.Historico;
 import br.com.powerprogramers.atendimento.domain.paginacao.Paginacao;
 import br.com.powerprogramers.atendimento.entity.AtendimentoEntity;
 import br.com.powerprogramers.atendimento.gateway.HistoricoGateway;
+import br.com.powerprogramers.atendimento.mapper.AtendimentoMapper;
 import br.com.powerprogramers.atendimento.usecase.ConsultarHistoricoUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class ConsultarHistoricoUseCaseImpl implements ConsultarHistoricoUseCase 
                 atendimentoHistorico.getNumber(),
                 atendimentoHistorico.getSize(),
                 atendimentoHistorico.getNumberOfElements(),
-                atendimentoHistorico.map(AtendimentoEntity::toHistorico).toList()
+                atendimentoHistorico.map(AtendimentoMapper.INSTANCE::toDomain).toList()
         );
     }
 }
