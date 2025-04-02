@@ -33,7 +33,6 @@ class ConsultarHistoricoUseCaseImplIT {
 
     @Test
     void deveIntegrarComDependenciasESuportarConsulta() {
-        // Arrange
         ConsultarHistorico input = mock(ConsultarHistorico.class);
         when(input.chavePesquisaValida()).thenReturn(true);
 
@@ -49,18 +48,18 @@ class ConsultarHistoricoUseCaseImplIT {
                 "Nenhum problema identificável",
                 1
 
-        ); // Simulação de um objeto Atendimento
+        );
+
         Page<Atendimento> pageMock = new PageImpl<>(
                 List.of(atendimentoMock),
                 Pageable.ofSize(10),
                 1
         );
+
         when(historicoGateway.consultarHistorico(input)).thenReturn(pageMock);
 
-        // Act
         Paginacao<Historico> resultado = useCase.execute(input);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(1, resultado.items().size());
         verify(historicoGateway).consultarHistorico(input);

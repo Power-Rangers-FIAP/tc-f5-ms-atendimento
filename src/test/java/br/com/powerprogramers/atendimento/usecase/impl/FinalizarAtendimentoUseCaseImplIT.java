@@ -14,17 +14,17 @@ import static org.mockito.Mockito.*;
 class FinalizarAtendimentoUseCaseImplIT {
 
     @InjectMocks
-    private FinalizarAtendimentoUseCaseImpl useCase; // Classe que está sendo testada
+    private FinalizarAtendimentoUseCaseImpl useCase;
 
     @Mock
-    private AtendimentoGateway atendimentoGateway; // Dependência simulada
+    private AtendimentoGateway atendimentoGateway;
 
     @Test
     void deveFinalizarAtendimentoComSucesso() {
-        FinalizarAtendimento input = new FinalizarAtendimento("1", "2", "3"); // Cria a simulação dos dados de entrada
+        FinalizarAtendimento input = new FinalizarAtendimento("1", "2", "3");
 
-        useCase.execute(input); // Executa o caso de uso
+        useCase.execute(input);
 
-        verify(atendimentoGateway, times(1)).finalizarAtendimento(input); // Verifica se o método foi chamado UMA vez
+        verify(atendimentoGateway, times(1)).finalizarAtendimento(input);
     }
 }

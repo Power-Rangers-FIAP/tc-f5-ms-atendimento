@@ -1,6 +1,7 @@
 package br.com.powerprogramers.atendimento.domain;
 
 import lombok.Builder;
+import lombok.Getter;
 
 import java.util.List;
 

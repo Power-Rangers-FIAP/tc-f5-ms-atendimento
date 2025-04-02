@@ -35,7 +35,6 @@ class ConsultarHistoricoUseCaseImplTest {
 
     @Test
     void deveConsultarHistoricoComSucessoQuandoChaveDePesquisaForValida() {
-        // Arrange
         ConsultarHistorico input = mock(ConsultarHistorico.class);
         when(input.chavePesquisaValida()).thenReturn(true);
 
@@ -51,21 +50,18 @@ class ConsultarHistoricoUseCaseImplTest {
                 "Nenhum problema identificável",
                 1
 
-        ); // Simulação de um objeto Atendimento
+        );
         Page<Atendimento> pageMock = new PageImpl<>(
                 List.of(atendimentoMock),
                 Pageable.ofSize(10),
                 1
         );
 
-        // Simula o comportamento do gateway
         when(historicoGateway.consultarHistorico(input))
                 .thenReturn(pageMock);
 
-        // Act
         Paginacao<Historico> resultado = useCase.execute(input);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(1, resultado.items().size());
         verify(historicoGateway).consultarHistorico(input);
@@ -73,11 +69,9 @@ class ConsultarHistoricoUseCaseImplTest {
 
     @Test
     void deveLancarExcecaoQuandoChaveDePesquisaNaoForValida() {
-        // Arrange
         ConsultarHistorico input = mock(ConsultarHistorico.class);
         when(input.chavePesquisaValida()).thenReturn(false);
 
-        // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class,
                 () -> useCase.execute(input));
 
@@ -87,12 +81,10 @@ class ConsultarHistoricoUseCaseImplTest {
 
     @Test
     void deveLancarExcecaoQuandoGatewayRetornaNulo() {
-        // Arrange
         ConsultarHistorico input = mock(ConsultarHistorico.class);
         when(input.chavePesquisaValida()).thenReturn(true);
         when(historicoGateway.consultarHistorico(input)).thenReturn(null);
 
-        // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class,
                 () -> useCase.execute(input));
 
