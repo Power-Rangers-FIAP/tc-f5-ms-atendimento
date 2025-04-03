@@ -260,7 +260,7 @@ components:
           type: string
           description: nome da unidade
           example: Postinho
-    EnfermidadeRequest:
+    Enfermidade:
       type: object
       properties:
         id:
@@ -309,7 +309,7 @@ components:
         enfermidades:
           type: array
           items:
-            $ref: "#/components/schemas/EnfermidadeRequest"
+            $ref: "#/components/schemas/Enfermidade"
     RegistrarEnfermidadeResponse:
       type: object
       properties:
@@ -360,6 +360,40 @@ components:
           type: string
           description: id do historico
           example: 2e84348b-953f-4d3c-a0ef-3e5e31a693cb
+        idPaciente:
+          type: string
+          description: id do paciente
+          example: 2e84348b-953f-4d3c-a0ef-3e5e31a693cb
+        idMedico:
+          type: string
+          description: id do medico
+          example: 2e84348b-953f-4d3c-a0ef-3e5e31a693cb
+        idUnidade:
+          type: string
+          description: id da unidade
+          example: 2e84348b-953f-4d3c-a0ef-3e5e31a693cb
+        dataHoraInicio:
+          type: string
+          format: date-time
+          description: data e hora de inicio do atendimento
+          example: 2023-10-01T10:00:00Z
+        dataHoraFim:
+          type: string
+          format: date-time
+          description: data e hora de fim do atendimento
+          example: 2023-10-01T11:00:00Z
+        status:
+          type: string
+          description: status do atendimento
+          example: FINALIZADO
+        enfermidade:
+          type: array
+          items:
+            $ref: "#/components/schemas/Enfermidade"
+        comentario:
+          type: string
+          description: comentario sobre atendimento
+          example: receitei que fique em casa e tome um antigripal
     HistoricoPaginadaResponse:
       type: object
       properties:

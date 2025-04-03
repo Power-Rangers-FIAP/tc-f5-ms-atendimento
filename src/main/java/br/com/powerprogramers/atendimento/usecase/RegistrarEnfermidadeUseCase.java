@@ -5,7 +5,6 @@ import br.com.powerprogramers.atendimento.domain.RegistrarAtendimento;
 
 public interface RegistrarEnfermidadeUseCase extends UseCase<RegistrarAtendimento, Atendimento> {
 
-    @Override
-    Atendimento execute(RegistrarAtendimento input);
-
+  @Override
+  Atendimento execute(RegistrarAtendimento input);
 }

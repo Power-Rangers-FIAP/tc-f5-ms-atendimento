@@ -1,34 +1,59 @@
 package br.com.powerprogramers.atendimento.domain;
 
 import br.com.powerprogramers.atendimento.domain.enums.StatusAtendimento;
-import lombok.Builder;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
-public record Atendimento(
-        String id,
-        String idPaciente,
-        String idMedico,
-        String idUnidade,
-        LocalDateTime dataHoraInicio,
-        LocalDateTime dataHoraFim,
-        StatusAtendimento status,
-        List<EnfermidadeRequest> enfermidade,
-        String comentario,
-        Integer numero
-) {
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+public class Atendimento {
+  private String id;
+  private String idPaciente;
+  private String idMedico;
+  private String idUnidade;
+  private Instant dataHoraInicio;
+  private Instant dataHoraFim;
+  private StatusAtendimento status;
+  private List<EnfermidadeRequest> enfermidade;
+  private String comentario;
+  private Integer numero;
+  private Avaliacao avaliacao;
 
-    public static Atendimento iniciarAtendimento(RegistrarAtendimento registrarAtendimento) {
-        return Atendimento.builder()
-                .idPaciente(registrarAtendimento.idPaciente())
-                .idUnidade(registrarAtendimento.idUnidade())
-                .dataHoraInicio(ZonedDateTime.now().toLocalDateTime())
-                .status(StatusAtendimento.ABERTO)
-                .enfermidade(registrarAtendimento.enfermidades())
-                .build();
-    }
+  public static Atendimento iniciarAtendimento(RegistrarAtendimento registrarAtendimento) {
+    return Atendimento.builder()
+        .idPaciente(registrarAtendimento.idPaciente())
+        .idUnidade(registrarAtendimento.idUnidade())
+        .dataHoraInicio(ZonedDateTime.now().toInstant())
+        .status(StatusAtendimento.ABERTO)
+        .enfermidade(registrarAtendimento.enfermidades())
+        .build();
+  }
 
+  public void definirNumero(Integer proximoNumero) {
+    this.numero = proximoNumero;
+  }
+
+  public void confirmarChegada() {
+    this.status = StatusAtendimento.EM_ATENDIMENTO;
+  }
+
+  public void finalizarAtendimento(String idMedico, String comentario) {
+    this.status = StatusAtendimento.FINALIZADO;
+    this.dataHoraFim = ZonedDateTime.now().toInstant();
+    this.idMedico = idMedico;
+    this.comentario = comentario;
+  }
+
+  public void registrarAvaliacao(Avaliacao avaliacao) {
+    this.avaliacao = avaliacao;
+  }
 }

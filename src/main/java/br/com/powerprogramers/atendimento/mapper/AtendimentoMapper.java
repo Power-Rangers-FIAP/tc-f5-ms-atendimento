@@ -1,12 +1,12 @@
 package br.com.powerprogramers.atendimento.mapper;
 
 import br.com.powerprogramers.atendimento.domain.Atendimento;
-import br.com.powerprogramers.atendimento.domain.Avaliacao;
 import br.com.powerprogramers.atendimento.domain.ConsultarHistorico;
+import br.com.powerprogramers.atendimento.domain.ControleAtendimento;
 import br.com.powerprogramers.atendimento.domain.FinalizarAtendimento;
-import br.com.powerprogramers.atendimento.domain.Historico;
 import br.com.powerprogramers.atendimento.domain.Login;
 import br.com.powerprogramers.atendimento.domain.RegistrarAtendimento;
+import br.com.powerprogramers.atendimento.domain.RegistrarAvaliacao;
 import br.com.powerprogramers.atendimento.domain.Token;
 import br.com.powerprogramers.atendimento.domain.Unidade;
 import br.com.powerprogramers.atendimento.domain.dto.AvaliacaoRequestDto;
@@ -20,38 +20,55 @@ import br.com.powerprogramers.atendimento.domain.dto.TokenResponseDto;
 import br.com.powerprogramers.atendimento.domain.dto.UnidadeResponseDto;
 import br.com.powerprogramers.atendimento.domain.enums.Enfermidade;
 import br.com.powerprogramers.atendimento.entity.AtendimentoEntity;
+import br.com.powerprogramers.atendimento.entity.ControleAtendimentoEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+
 @Mapper
 public interface AtendimentoMapper {
 
-    AtendimentoMapper INSTANCE = Mappers.getMapper(AtendimentoMapper.class);
+  AtendimentoMapper INSTANCE = Mappers.getMapper(AtendimentoMapper.class);
 
-    Login toDomain(LoginRequestDto dto);
+  Login toDomain(LoginRequestDto dto);
 
-    Avaliacao toDomain(AvaliacaoRequestDto dto);
+  RegistrarAvaliacao toDomain(AvaliacaoRequestDto dto);
 
-    FinalizarAtendimento toDomain(FinalizarAtendimentoRequestDto dto);
+  FinalizarAtendimento toDomain(FinalizarAtendimentoRequestDto dto);
 
-    ConsultarHistorico toDomain(int pagina, int porPagina, String idPaciente, String idMedico);
+  ConsultarHistorico toDomain(int pagina, int porPagina, String idPaciente, String idMedico);
 
-    RegistrarAtendimento toDomain(RegistrarEnfermidadeRequestDto dto);
+  RegistrarAtendimento toDomain(RegistrarEnfermidadeRequestDto dto);
 
-    Atendimento toDomain(AtendimentoEntity entity);
+  Atendimento toDomain(AtendimentoEntity entity);
 
-    Historico toDomain(Atendimento entity);
+  ControleAtendimento toDomain(ControleAtendimentoEntity entity);
 
-    TokenResponseDto toDto(Token domain);
+  TokenResponseDto toDto(Token domain);
 
-    @Mapping(target = "id", expression = "java(domain.name())")
-    EnfermidadeResponseDto toDto(Enfermidade domain);
+  @Mapping(target = "id", expression = "java(domain.name())")
+  EnfermidadeResponseDto toDto(Enfermidade domain);
 
-    HistoricoResponseDto toDto(Historico domain);
+  @Mapping(target = "dataHoraInicio", expression = "java(mapOffsetDateTime(domain.getDataHoraInicio()))")
+  @Mapping(target = "dataHoraFim", expression = "java(mapOffsetDateTime(domain.getDataHoraFim()))")
+  HistoricoResponseDto toHistoricoDto(Atendimento domain);
 
-    UnidadeResponseDto toDto(Unidade domain);
+  UnidadeResponseDto toDto(Unidade domain);
 
-    RegistrarEnfermidadeResponseDto toDto(Atendimento domain);
+  RegistrarEnfermidadeResponseDto toDto(Atendimento domain);
 
+  AtendimentoEntity toEntity(Atendimento domain);
+
+  ControleAtendimentoEntity toEntity(ControleAtendimento domain);
+
+  default OffsetDateTime mapOffsetDateTime(Instant instant) {
+    if (instant == null) {
+      return null;
+    }
+    return OffsetDateTime.ofInstant(instant, ZoneId.systemDefault());
+  }
 }
