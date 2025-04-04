@@ -62,4 +62,19 @@ public class ControleAtendimentoGatewayImplIT {
         verify(mongoTemplate, times(1)).findOne(any(Query.class), eq(ControleAtendimentoEntity.class));
         verify(controleAtendimentoRepository, times(1)).save(any(ControleAtendimentoEntity.class));
     }
+
+    @Test
+    void deveRetornarNumeroCorretoQuandoControleExistente() {
+        String idUnidade = "unidade1";
+        var entidadeExistente = new ControleAtendimentoEntity(idUnidade, 3, 5);
+
+        when(mongoTemplate.findOne(any(Query.class), eq(ControleAtendimentoEntity.class)))
+                .thenReturn(entidadeExistente);
+
+        Integer numeroGerado = controleAtendimentoGateway.buscarNumero(idUnidade);
+
+        assertEquals(6, numeroGerado);
+        verify(mongoTemplate, times(1)).findOne(any(Query.class), eq(ControleAtendimentoEntity.class));
+        verify(controleAtendimentoRepository, times(1)).save(any(ControleAtendimentoEntity.class));
+    }
 }
