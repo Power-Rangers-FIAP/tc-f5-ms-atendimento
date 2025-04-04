@@ -1,6 +1,7 @@
 package br.com.powerprogramers.atendimento.gateway;
 
 import br.com.powerprogramers.atendimento.domain.Atendimento;
+import br.com.powerprogramers.atendimento.domain.ConsultarAvaliacao;
 import br.com.powerprogramers.atendimento.domain.ConsultarHistorico;
 import org.springframework.data.domain.Page;
 
@@ -13,4 +14,7 @@ public interface AtendimentoGateway {
   boolean existeAtendimentoAberto(String idAtendimento);
 
   Page<Atendimento> consultarHistorico(ConsultarHistorico input);
+
+  Page<Atendimento> consultarAvaliacao(ConsultarAvaliacao input);
+
 }

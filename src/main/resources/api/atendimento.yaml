@@ -16,6 +16,8 @@ tags:
     description: Todo sobre atendimento
   - name: Historico
     description: Todo sobre historico do paciente
+  - name: Avaliacao
+    description: Todo sobre avaliações de atendimentos
 
 paths:
   /atendimento/login:
@@ -154,9 +156,63 @@ paths:
         '401':
           description: Não autorizado
   /atendimento/avalicao:
+    get:
+      tags:
+        - Avaliacao
+      summary: Realiza consulta de avaliação
+      description: Retorna as avaliações de atendimento por medico ou unidade
+      operationId: consultarAvaliacoes
+      parameters:
+        - name: pagina
+          in: query
+          description: Número da página
+          required: false
+          schema:
+            type: integer
+            default: 0
+            example: 1
+        - name: porPagina
+          in: query
+          description: Número de itens por página
+          required: false
+          schema:
+            type: integer
+            default: 10
+            example: 10
+        - name: idUnidade
+          in: query
+          description: ID da unidade
+          required: false
+          example: 2e84348b-953f-4d3c-a0ef-3e5e31a693cb
+          schema:
+            type: string
+        - name: idMedico
+          in: query
+          description: ID do médico
+          required: false
+          example: 2e84348b-953f-4d3c-a0ef-3e5e31a693cb
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operação bem-sucedida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvaliacaoPaginadaResponse'
+        '400':
+          description: Requisição mal sucedida
+        '401':
+          description: Não autorizado
+      x-codegen-request-validator:
+        oneOf:
+          - required:
+              - idUnidade
+          - required:
+              - idMedico
     post:
       tags:
-        - Atendimento
+        - Avaliacao
       summary: Avaliar o atendimento
       description: Paciente realiza a avaliação do atendimento
       operationId: avaliarAtendimento
@@ -295,6 +351,23 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/UnidadeResponse"
+    AvaliacaoPaginadaResponse:
+      type: object
+      properties:
+        pagina:
+          type: integer
+          example: 1
+        porPagina:
+          type: integer
+          example: 10
+        total:
+          type: integer
+          format: int64
+          example: 100
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/AvaliacaoResponse"
     RegistrarEnfermidadeRequest:
       type: object
       properties:
@@ -342,6 +415,27 @@ components:
         idAtendimento:
           type: string
           description: id do atendimento
+          example: 2e84348b-953f-4d3c-a0ef-3e5e31a693cb
+        nota:
+          type: integer
+          description: nota do atendimento
+          example: 2
+          minimum: 1
+          maximum: 5
+        comentario:
+          type: string
+          description: comentario sobre avaliação
+          example: medico muito ruim não me deu atenção
+    AvaliacaoResponse:
+      type: object
+      properties:
+        idUnidade:
+          type: string
+          description: id da unidade
+          example: 2e84348b-953f-4d3c-a0ef-3e5e31a693cb
+        idMedico:
+          type: string
+          description: id do Médico
           example: 2e84348b-953f-4d3c-a0ef-3e5e31a693cb
         nota:
           type: integer
