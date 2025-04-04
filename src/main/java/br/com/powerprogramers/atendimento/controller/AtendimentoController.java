@@ -1,6 +1,7 @@
 package br.com.powerprogramers.atendimento.controller;
 
 import br.com.powerprogramers.atendimento.api.AtendimentoApi;
+import br.com.powerprogramers.atendimento.domain.dto.AvaliacaoPaginadaResponseDto;
 import br.com.powerprogramers.atendimento.domain.dto.AvaliacaoRequestDto;
 import br.com.powerprogramers.atendimento.domain.dto.EnfermidadeResponseDto;
 import br.com.powerprogramers.atendimento.domain.dto.FinalizarAtendimentoRequestDto;
@@ -12,10 +13,10 @@ import br.com.powerprogramers.atendimento.domain.dto.TokenResponseDto;
 import br.com.powerprogramers.atendimento.domain.dto.UnidadePaginadaResponseDto;
 import br.com.powerprogramers.atendimento.domain.enums.Enfermidade;
 import br.com.powerprogramers.atendimento.domain.paginacao.Pagina;
-import br.com.powerprogramers.atendimento.exception.ConsultaHistoricoInvalidaException;
 import br.com.powerprogramers.atendimento.mapper.AtendimentoMapper;
 import br.com.powerprogramers.atendimento.usecase.AvaliarAtendimentoUseCase;
 import br.com.powerprogramers.atendimento.usecase.ConfirmarChegadaUseCase;
+import br.com.powerprogramers.atendimento.usecase.ConsultarAvaliacaoUseCase;
 import br.com.powerprogramers.atendimento.usecase.ConsultarHistoricoUseCase;
 import br.com.powerprogramers.atendimento.usecase.FinalizarAtendimentoUseCase;
 import br.com.powerprogramers.atendimento.usecase.IniciarAtendimentoUseCase;
@@ -43,6 +44,7 @@ public class AtendimentoController implements AtendimentoApi {
   private final ConsultarHistoricoUseCase consultarHistoricoUseCase;
   private final IniciarAtendimentoUseCase iniciarAtendimentoUseCase;
   private final RegistrarEnfermidadeUseCase registrarEnfermidadeUseCase;
+  private final ConsultarAvaliacaoUseCase consultarAvaliacaoUseCase;
 
   @Override
   public ResponseEntity<Void> avaliarAtendimento(AvaliacaoRequestDto body) {
@@ -75,10 +77,6 @@ public class AtendimentoController implements AtendimentoApi {
       Integer pagina, Integer porPagina, String idPaciente, String idMedico) {
     log.info("Consultando historico :: Inicio");
     var request = atendimentoMapper.toDomain(pagina, porPagina, idPaciente, idMedico);
-
-    if (request == null) {
-      throw new ConsultaHistoricoInvalidaException();
-    }
 
     var response = this.consultarHistoricoUseCase.execute(request);
 
@@ -137,5 +135,23 @@ public class AtendimentoController implements AtendimentoApi {
     var response = registrarEnfermidadeUseCase.execute(request);
     log.info("Registrando enfermidade :: Fim");
     return ResponseEntity.ok().body(atendimentoMapper.toDto(response));
+  }
+
+  @Override
+  public ResponseEntity<AvaliacaoPaginadaResponseDto> consultarAvaliacoes(Integer pagina, Integer porPagina, String idUnidade, String idMedico) {
+    log.info("Consultando avaliacao :: Inicio");
+    var request = atendimentoMapper.toAvaliacaoDomain(pagina, porPagina, idUnidade, idMedico);
+
+    var response = this.consultarAvaliacaoUseCase.execute(request);
+
+    final var avaliacao =
+        new AvaliacaoPaginadaResponseDto()
+            .items(response.items().stream().map(atendimentoMapper::toAvaliacaoDto).toList())
+            .pagina(response.pagina())
+            .porPagina(response.porPagina())
+            .total(response.total());
+
+    log.info("Consultando avaliacao :: Fim");
+    return ResponseEntity.ok().body(avaliacao);
   }
 }

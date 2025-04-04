@@ -19,7 +19,7 @@ public class ConsultarHistoricoUseCaseImpl implements ConsultarHistoricoUseCase 
   @Override
   public Paginacao<Atendimento> execute(ConsultarHistorico input) {
 
-    if (!input.chavePesquisaValida()) {
+    if (input == null || !input.chavePesquisaValida()) {
       throw new ConsultaHistoricoInvalidaException();
     }
 

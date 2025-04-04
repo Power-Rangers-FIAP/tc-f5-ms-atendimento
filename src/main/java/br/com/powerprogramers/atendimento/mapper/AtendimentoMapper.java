@@ -1,6 +1,7 @@
 package br.com.powerprogramers.atendimento.mapper;
 
 import br.com.powerprogramers.atendimento.domain.Atendimento;
+import br.com.powerprogramers.atendimento.domain.ConsultarAvaliacao;
 import br.com.powerprogramers.atendimento.domain.ConsultarHistorico;
 import br.com.powerprogramers.atendimento.domain.ControleAtendimento;
 import br.com.powerprogramers.atendimento.domain.FinalizarAtendimento;
@@ -10,6 +11,7 @@ import br.com.powerprogramers.atendimento.domain.RegistrarAvaliacao;
 import br.com.powerprogramers.atendimento.domain.Token;
 import br.com.powerprogramers.atendimento.domain.Unidade;
 import br.com.powerprogramers.atendimento.domain.dto.AvaliacaoRequestDto;
+import br.com.powerprogramers.atendimento.domain.dto.AvaliacaoResponseDto;
 import br.com.powerprogramers.atendimento.domain.dto.EnfermidadeResponseDto;
 import br.com.powerprogramers.atendimento.domain.dto.FinalizarAtendimentoRequestDto;
 import br.com.powerprogramers.atendimento.domain.dto.HistoricoResponseDto;
@@ -48,6 +50,8 @@ public interface AtendimentoMapper {
 
   ControleAtendimento toDomain(ControleAtendimentoEntity entity);
 
+  ConsultarAvaliacao toAvaliacaoDomain(int pagina, int porPagina, String idUnidade, String idMedico);
+
   TokenResponseDto toDto(Token domain);
 
   @Mapping(target = "id", expression = "java(domain.name())")
@@ -60,6 +64,10 @@ public interface AtendimentoMapper {
   UnidadeResponseDto toDto(Unidade domain);
 
   RegistrarEnfermidadeResponseDto toDto(Atendimento domain);
+
+  @Mapping(target = "nota", expression = "java(domain.getAvaliacao().nota())")
+  @Mapping(target = "comentario", expression = "java(domain.getAvaliacao().comentario())")
+  AvaliacaoResponseDto toAvaliacaoDto(Atendimento domain);
 
   AtendimentoEntity toEntity(Atendimento domain);
 
