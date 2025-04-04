@@ -13,15 +13,14 @@ import jakarta.persistence.OneToOne;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "atendimento")
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
