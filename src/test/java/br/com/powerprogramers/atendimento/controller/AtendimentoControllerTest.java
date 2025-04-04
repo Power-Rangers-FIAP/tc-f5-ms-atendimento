@@ -35,15 +35,6 @@ class AtendimentoControllerTest {
     @Mock
     private FinalizarAtendimentoUseCase finalizarAtendimentoUseCase;
 
-    @Mock
-    private ConsultarHistoricoUseCase consultarHistoricoUseCase;
-
-    @Mock
-    private IniciarAtendimentoUseCase iniciarAtendimentoUseCase;
-
-    @Mock
-    private RegistrarEnfermidadeUseCase registrarEnfermidadeUseCase;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
