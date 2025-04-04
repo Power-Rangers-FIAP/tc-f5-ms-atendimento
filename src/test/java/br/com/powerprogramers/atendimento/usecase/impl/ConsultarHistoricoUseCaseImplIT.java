@@ -2,10 +2,8 @@ package br.com.powerprogramers.atendimento.usecase.impl;
 
 import br.com.powerprogramers.atendimento.domain.Atendimento;
 import br.com.powerprogramers.atendimento.domain.ConsultarHistorico;
-import br.com.powerprogramers.atendimento.domain.Historico;
-import br.com.powerprogramers.atendimento.domain.enums.StatusAtendimento;
 import br.com.powerprogramers.atendimento.domain.paginacao.Paginacao;
-import br.com.powerprogramers.atendimento.gateway.HistoricoGateway;
+import br.com.powerprogramers.atendimento.gateway.AtendimentoGateway;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -16,7 +14,6 @@ import org.springframework.data.domain.PageImpl;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,26 +26,14 @@ class ConsultarHistoricoUseCaseImplIT {
     private ConsultarHistoricoUseCaseImpl useCase;
 
     @Mock
-    private HistoricoGateway historicoGateway;
+    private AtendimentoGateway atendimentoGateway;
 
     @Test
     void deveIntegrarComDependenciasESuportarConsulta() {
         ConsultarHistorico input = mock(ConsultarHistorico.class);
         when(input.chavePesquisaValida()).thenReturn(true);
 
-        Atendimento atendimentoMock = new Atendimento(
-                "12345",
-                "paciente1",
-                "medico1",
-                "unidade1",
-                LocalDateTime.of(2023, 10, 10, 14, 0),
-                LocalDateTime.of(2023, 10, 10, 15, 0),
-                StatusAtendimento.FINALIZADO,
-                null,
-                "Nenhum problema identificável",
-                1
-
-        );
+        Atendimento atendimentoMock = new Atendimento();
 
         Page<Atendimento> pageMock = new PageImpl<>(
                 List.of(atendimentoMock),
@@ -56,12 +41,12 @@ class ConsultarHistoricoUseCaseImplIT {
                 1
         );
 
-        when(historicoGateway.consultarHistorico(input)).thenReturn(pageMock);
+        when(atendimentoGateway.consultarHistorico(input)).thenReturn(pageMock);
 
-        Paginacao<Historico> resultado = useCase.execute(input);
+        Paginacao<Atendimento> resultado = useCase.execute(input);
 
         assertNotNull(resultado);
         assertEquals(1, resultado.items().size());
-        verify(historicoGateway).consultarHistorico(input);
+        verify(atendimentoGateway).consultarHistorico(input);
     }
 }

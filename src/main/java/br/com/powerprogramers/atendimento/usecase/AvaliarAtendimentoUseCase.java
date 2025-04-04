@@ -1,10 +1,9 @@
 package br.com.powerprogramers.atendimento.usecase;
 
-import br.com.powerprogramers.atendimento.domain.Avaliacao;
+import br.com.powerprogramers.atendimento.domain.RegistrarAvaliacao;
 
-public interface AvaliarAtendimentoUseCase extends UnitUseCase<Avaliacao> {
+public interface AvaliarAtendimentoUseCase extends UnitUseCase<RegistrarAvaliacao> {
 
-    @Override
-    void execute(Avaliacao input);
-
+  @Override
+  void execute(RegistrarAvaliacao input);
 }

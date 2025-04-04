@@ -13,13 +13,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class IniciarAtendimentoUseCaseImpl implements IniciarAtendimentoUseCase {
 
-    private final UnidadeGateway unidadeGateway;
+  private final UnidadeGateway unidadeGateway;
 
-    @Override
-    public Paginacao<Unidade> execute(Pagina input) {
-        PageRequest pageable = PageRequest.of(input.pagina(), input.porPagina());
-        unidadeGateway.listarUnidade(pageable);
-
-        return null; //FIXME ajustar depois de ter o retorno de unidade
-    }
+  @Override
+  public Paginacao<Unidade> execute(Pagina input) {
+    PageRequest pageable = PageRequest.of(input.pagina(), input.porPagina());
+    return this.unidadeGateway.listarUnidade(pageable);
+  }
 }

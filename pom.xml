@@ -178,7 +178,6 @@
 	</dependencies>
 
 	<build>
-		<defaultGoal>clean com.coveo:fmt-maven-plugin:2.9:format install</defaultGoal>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

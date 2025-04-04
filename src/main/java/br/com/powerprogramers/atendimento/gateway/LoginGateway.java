@@ -5,6 +5,5 @@ import br.com.powerprogramers.atendimento.domain.Token;
 
 public interface LoginGateway {
 
-    Token realizarLogin(Login input);
-
+  Token realizarLogin(Login input);
 }

@@ -1,10 +1,10 @@
 package br.com.powerprogramers.atendimento.domain.enums;
 
 public enum Enfermidade {
-    DIABETES,
-    HIPERTENSAO,
-    ASMA,
-    BRONQUITE,
-    RESFRIADO,
-    OUTRA
+  DIABETES,
+  HIPERTENSAO,
+  ASMA,
+  BRONQUITE,
+  RESFRIADO,
+  OUTRA
 }

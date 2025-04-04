@@ -1,12 +1,12 @@
 package br.com.powerprogramers.atendimento.usecase;
 
+import br.com.powerprogramers.atendimento.domain.Atendimento;
 import br.com.powerprogramers.atendimento.domain.ConsultarHistorico;
-import br.com.powerprogramers.atendimento.domain.Historico;
 import br.com.powerprogramers.atendimento.domain.paginacao.Paginacao;
 
-public interface ConsultarHistoricoUseCase extends UseCase<ConsultarHistorico, Paginacao<Historico>> {
+public interface ConsultarHistoricoUseCase
+    extends UseCase<ConsultarHistorico, Paginacao<Atendimento>> {
 
-    @Override
-    Paginacao<Historico> execute(ConsultarHistorico input);
-
+  @Override
+  Paginacao<Atendimento> execute(ConsultarHistorico input);
 }

@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RealizarLoginUseCaseImpl implements RealizarLoginUseCase {
 
-    private final LoginGateway loginGateway;
+  private final LoginGateway loginGateway;
 
-    @Override
-    public Token execute(Login input) {
-        return loginGateway.realizarLogin(input);
-    }
+  @Override
+  public Token execute(Login input) {
+    return this.loginGateway.realizarLogin(input);
+  }
 }

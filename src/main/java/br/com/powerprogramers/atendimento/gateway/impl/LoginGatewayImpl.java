@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LoginGatewayImpl implements LoginGateway {
 
-    private final LoginService loginService;
+  private final LoginService loginService;
 
-    @Override
-    public Token realizarLogin(Login input) {
-        return this.loginService.login(input.email(), input.senha());
-    }
+  @Override
+  public Token realizarLogin(Login input) {
+    return this.loginService.login(input.email(), input.senha());
+  }
 }

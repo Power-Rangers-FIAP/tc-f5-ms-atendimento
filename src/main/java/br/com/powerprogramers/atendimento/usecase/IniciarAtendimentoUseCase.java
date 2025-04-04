@@ -6,7 +6,6 @@ import br.com.powerprogramers.atendimento.domain.paginacao.Paginacao;
 
 public interface IniciarAtendimentoUseCase extends UseCase<Pagina, Paginacao<Unidade>> {
 
-    @Override
-    Paginacao<Unidade> execute(Pagina input);
-
+  @Override
+  Paginacao<Unidade> execute(Pagina input);
 }

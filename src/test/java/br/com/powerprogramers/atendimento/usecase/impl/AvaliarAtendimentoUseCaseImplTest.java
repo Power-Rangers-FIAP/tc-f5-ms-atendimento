@@ -1,9 +1,8 @@
 package br.com.powerprogramers.atendimento.usecase.impl;
 
-import br.com.powerprogramers.atendimento.domain.Avaliacao;
+import br.com.powerprogramers.atendimento.domain.Atendimento;
+import br.com.powerprogramers.atendimento.domain.RegistrarAvaliacao;
 import br.com.powerprogramers.atendimento.domain.enums.StatusAtendimento;
-import br.com.powerprogramers.atendimento.entity.AtendimentoEntity;
-import br.com.powerprogramers.atendimento.entity.AvaliacaoEntity;
 import br.com.powerprogramers.atendimento.gateway.AtendimentoGateway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,30 +28,30 @@ class AvaliarAtendimentoUseCaseImplTest {
 
     @Test
     void deveExecutarComSucessoQuandoAtendimentoForFinalizado() {
-        AtendimentoEntity atendimentoMock = new AtendimentoEntity();
+        Atendimento atendimentoMock = new Atendimento();
         atendimentoMock.setStatus(StatusAtendimento.FINALIZADO);
 
-        Avaliacao avaliacao = new Avaliacao("1", 5, "Muito bom!");
+        RegistrarAvaliacao registrarAvaliacao = new RegistrarAvaliacao("1", 5, "Muito bom!");
 
         when(atendimentoGateway.getById("1")).thenReturn(atendimentoMock);
 
-        assertDoesNotThrow(() -> useCase.execute(avaliacao));
+        assertDoesNotThrow(() -> useCase.execute(registrarAvaliacao));
 
-        verify(atendimentoGateway).save(any(AvaliacaoEntity.class));
+        verify(atendimentoGateway).save(any(Atendimento.class));
     }
 
     @Test
     void deveLancarExcecaoQuandoAtendimentoNaoForFinalizado() {
-        AtendimentoEntity atendimentoMock = new AtendimentoEntity();
+        Atendimento atendimentoMock = new Atendimento();
         atendimentoMock.setStatus(StatusAtendimento.EM_ATENDIMENTO);
 
-        Avaliacao avaliacao = new Avaliacao("1", 5, "Muito bom!");
+        RegistrarAvaliacao registrarAvaliacao = new RegistrarAvaliacao("1", 5, "Muito bom!");
 
         when(atendimentoGateway.getById("1")).thenReturn(atendimentoMock);
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> useCase.execute(avaliacao));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> useCase.execute(registrarAvaliacao));
 
-        verify(atendimentoGateway, never()).save(any(AvaliacaoEntity.class));
+        verify(atendimentoGateway, never()).save(any(Atendimento.class));
         assertNotNull(exception);
     }
 

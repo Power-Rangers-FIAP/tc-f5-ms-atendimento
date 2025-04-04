@@ -1,6 +1,8 @@
 package br.com.powerprogramers.atendimento.usecase.impl;
 
+import br.com.powerprogramers.atendimento.domain.Atendimento;
 import br.com.powerprogramers.atendimento.domain.Avaliacao;
+import br.com.powerprogramers.atendimento.domain.RegistrarAvaliacao;
 import br.com.powerprogramers.atendimento.domain.enums.StatusAtendimento;
 import br.com.powerprogramers.atendimento.entity.AtendimentoEntity;
 import br.com.powerprogramers.atendimento.gateway.AtendimentoGateway;
@@ -24,14 +26,14 @@ class AvaliarAtendimentoUseCaseImplIT {
 
     @Test
     void deveSalvarAvaliacaoCompondoTodasAsDependencias() {
-        AtendimentoEntity atendimentoMock = new AtendimentoEntity();
+        Atendimento atendimentoMock = new Atendimento();
         atendimentoMock.setStatus(StatusAtendimento.FINALIZADO);
 
-        Avaliacao avaliacao = new Avaliacao("1", 4, "Serviço muito bom.");
+        RegistrarAvaliacao registrarAvaliacao = new RegistrarAvaliacao("1", 4, "Serviço muito bom.");
 
         when(atendimentoGateway.getById("1")).thenReturn(atendimentoMock);
 
-        assertDoesNotThrow(() -> useCase.execute(avaliacao));
+        assertDoesNotThrow(() -> useCase.execute(registrarAvaliacao));
         verify(atendimentoGateway).save(any());
     }
 }

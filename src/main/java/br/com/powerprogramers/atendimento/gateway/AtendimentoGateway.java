@@ -1,21 +1,16 @@
 package br.com.powerprogramers.atendimento.gateway;
 
 import br.com.powerprogramers.atendimento.domain.Atendimento;
-import br.com.powerprogramers.atendimento.domain.FinalizarAtendimento;
-import br.com.powerprogramers.atendimento.domain.RegistrarAtendimento;
-import br.com.powerprogramers.atendimento.entity.AtendimentoEntity;
-import br.com.powerprogramers.atendimento.entity.AvaliacaoEntity;
+import br.com.powerprogramers.atendimento.domain.ConsultarHistorico;
+import org.springframework.data.domain.Page;
 
 public interface AtendimentoGateway {
 
-    AtendimentoEntity getById(String idAtendimento);
+  Atendimento getById(String idAtendimento);
 
-    void save(AvaliacaoEntity avaliacao);
+  Atendimento save(Atendimento atendimento);
 
-    void confirmarChegada(String idAtendimento);
+  boolean existeAtendimentoAberto(String idAtendimento);
 
-    void finalizarAtendimento(FinalizarAtendimento finalizarAtendimento);
-
-    Atendimento registrarEnfermidade(RegistrarAtendimento registrarEnfermidade);
-
+  Page<Atendimento> consultarHistorico(ConsultarHistorico input);
 }
