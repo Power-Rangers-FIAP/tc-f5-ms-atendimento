@@ -2,6 +2,7 @@ package br.com.powerprogramers.atendimento.domain;
 
 import br.com.powerprogramers.atendimento.domain.enums.StatusAtendimento;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
@@ -55,4 +56,10 @@ public class Atendimento {
   public void registrarAvaliacao(Avaliacao avaliacao) {
     this.avaliacao = avaliacao;
   }
+
+  public boolean estaAtrasadoAhMaisDe(Long minutosAtrasado) {
+    var agora = ZonedDateTime.now().toInstant();
+    return this.dataHoraInicio.plus(Duration.ofMinutes(minutosAtrasado)).isBefore(agora);
+  }
+
 }
