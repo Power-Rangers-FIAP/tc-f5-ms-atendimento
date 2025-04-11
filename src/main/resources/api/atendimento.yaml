@@ -316,6 +316,37 @@ components:
           type: string
           description: nome da unidade
           example: Postinho
+        endereco:
+          type: string
+          description: endereco da unidade
+          example: Praça da Sé, 123
+        quantidadeMedicos:
+          type: integer
+          description: quantidade de medicos atendendo na unidade
+          example: 2
+        quantidadePacientes:
+          type: integer
+          description: quantidade de pacientes na fila
+          example: 5
+        tempoMedioAtendimento:
+          type: string
+          description: tempo medio de atendimento por paciente
+          example: Aproximadamente 12 minutos
+        especialidades:
+          type: array
+          items:
+            $ref: "#/components/schemas/EspecialidadesResponse"
+    EspecialidadesResponse:
+        type: object
+        properties:
+          nome:
+            type: string
+            description: nome da especialidade
+            example: Clinica Geral
+          descricao:
+            type: string
+            description: descricao da especialidade
+            example: Oferecemos atendimento médico completo e personalizado
     Enfermidade:
       type: object
       properties:

@@ -45,6 +45,16 @@ public class ControleAtendimentoGatewayImpl implements ControleAtendimentoGatewa
     }
   }
 
+  @Override
+  public Integer buscarQuantidadePacientes(String idUnidade) {
+    var controleAtendimento = encontrarControleAtendimento(idUnidade);
+    if (controleAtendimento == null) {
+      return 0;
+    }
+
+    return controleAtendimento.getQuantidadePacientes();
+  }
+
   private ControleAtendimento encontrarControleAtendimento(String idUnidade) {
     var query = new Query(Criteria.where("_id").is(idUnidade));
     query.collation(Collation.of("pt").strength(Collation.ComparisonLevel.primary()));
