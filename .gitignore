@@ -245,3 +245,5 @@ buildNumber.properties
 .sonarlint/
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,maven,git,dotenv,cmake,sonarqube,sonar,crashlytics,java
+
+allure-results
