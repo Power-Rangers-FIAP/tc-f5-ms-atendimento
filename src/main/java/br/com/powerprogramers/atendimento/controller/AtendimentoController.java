@@ -118,10 +118,11 @@ public class AtendimentoController implements AtendimentoApi {
   }
 
   @Override
+  //@PostAuthorize("hasAnyRole('" + Role.PATIENT + "', ' " + Role.DOCTOR + "')")
   public ResponseEntity<TokenResponseDto> realizaLogin(LoginRequestDto body) {
     log.info("Realizando login :: Inicio");
-    var reqeust = atendimentoMapper.toDomain(body);
-    var response = realizarLoginUseCase.execute(reqeust);
+    var request = atendimentoMapper.toDomain(body);
+    var response = realizarLoginUseCase.execute(request);
     var tokenResponseDto = atendimentoMapper.toDto(response);
     log.info("Realizando login :: Fim");
     return ResponseEntity.ok(tokenResponseDto);

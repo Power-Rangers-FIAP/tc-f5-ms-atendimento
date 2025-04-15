@@ -289,11 +289,10 @@ components:
     LoginRequest:
       type: object
       properties:
-        email:
+        usuario:
           type: string
-          format: email
-          description: email do usuário
-          example: usuario@email.com
+          description: nome de usuário
+          example: gabriel0475
         senha:
           type: string
           description: senha do usuário

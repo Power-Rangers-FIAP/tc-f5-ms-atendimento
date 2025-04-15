@@ -15,6 +15,6 @@ public class LoginGatewayImpl implements LoginGateway {
 
   @Override
   public Token realizarLogin(Login input) {
-    return this.loginService.login(input.email(), input.senha());
+    return this.loginService.login(input);
   }
 }

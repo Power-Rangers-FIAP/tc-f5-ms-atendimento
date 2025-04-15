@@ -30,11 +30,11 @@ class LoginGatewayImplTest {
         Login login = new Login("user@example.com", "senha123");
         Token tokenEsperado = new Token("jwt-token");
 
-        when(loginService.login(login.email(), login.senha())).thenReturn(tokenEsperado);
+        when(loginService.login(login)).thenReturn(tokenEsperado);
 
         Token resultado = loginGateway.realizarLogin(login);
 
         assertEquals(tokenEsperado, resultado);
-        verify(loginService, times(1)).login(login.email(), login.senha());
+        verify(loginService, times(1)).login(login);
     }
 }
