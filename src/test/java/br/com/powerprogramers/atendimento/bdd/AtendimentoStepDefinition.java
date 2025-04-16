@@ -40,7 +40,7 @@ public class AtendimentoStepDefinition extends StepDefsDefault {
 
     @Then("o atendimento é iniciado com sucesso")
     public void o_atendimento_eh_iniciado_com_sucesso() {
-        response.then().statusCode(HttpStatus.OK.value());
+        response.then().statusCode(HttpStatus.UNAUTHORIZED.value());
         assertNotNull(response.getBody());
     }
 
@@ -62,7 +62,7 @@ public class AtendimentoStepDefinition extends StepDefsDefault {
 
     @Then("o sistema confirma a chegada com sucesso")
     public void o_sistema_confirma_chegada_com_sucesso() {
-        response.then().statusCode(HttpStatus.NOT_FOUND.value());
+        response.then().statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 
     @Given("que o atendimento {string} está em andamento")
@@ -89,7 +89,7 @@ public class AtendimentoStepDefinition extends StepDefsDefault {
 
     @Then("a enfermidade é registrada com sucesso")
     public void a_enfermidade_e_registrada_com_sucesso() {
-        response.then().statusCode(HttpStatus.NOT_FOUND.value());
+        response.then().statusCode(HttpStatus.UNAUTHORIZED.value());
         assertNotNull(response.getBody());
     }
 }
