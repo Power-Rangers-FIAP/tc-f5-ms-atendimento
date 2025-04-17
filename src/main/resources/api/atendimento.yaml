@@ -155,7 +155,7 @@ paths:
           description: finalizado
         '401':
           description: Não autorizado
-  /atendimento/avalicao:
+  /atendimento/avaliacao:
     get:
       tags:
         - Avaliacao

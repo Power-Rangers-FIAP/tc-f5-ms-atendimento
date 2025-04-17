@@ -25,7 +25,7 @@ public class RegistrarEnfermidadeUseCaseImpl implements RegistrarEnfermidadeUseC
     }
 
     var atendimentoEmAberto = this.atendimentoGateway.existeAtendimentoAberto(input.idPaciente());
-    if (atendimentoEmAberto) {
+    if (atendimentoEmAberto != null) {
       throw new JaPossuiRegistroAtendimentoEmAbertoException();
     }
 

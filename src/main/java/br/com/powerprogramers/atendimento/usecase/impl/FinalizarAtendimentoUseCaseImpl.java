@@ -2,6 +2,7 @@ package br.com.powerprogramers.atendimento.usecase.impl;
 
 import br.com.powerprogramers.atendimento.domain.FinalizarAtendimento;
 import br.com.powerprogramers.atendimento.domain.enums.StatusAtendimento;
+import br.com.powerprogramers.atendimento.exception.AtendimentoException;
 import br.com.powerprogramers.atendimento.exception.AtendimentoJaFinalizadoException;
 import br.com.powerprogramers.atendimento.gateway.AtendimentoGateway;
 import br.com.powerprogramers.atendimento.gateway.ControleAtendimentoGateway;
@@ -18,6 +19,10 @@ public class FinalizarAtendimentoUseCaseImpl implements FinalizarAtendimentoUseC
 
   @Override
   public void execute(FinalizarAtendimento input) {
+
+    if (!input.ehMedico()) {
+      throw new AtendimentoException("Usuário não tem permissão");
+    }
 
     var atendimento = this.atendimentoGateway.getById(input.idAtendimento());
 

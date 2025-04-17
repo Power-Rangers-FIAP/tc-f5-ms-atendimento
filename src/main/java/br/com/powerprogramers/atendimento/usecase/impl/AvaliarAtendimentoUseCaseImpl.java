@@ -3,6 +3,7 @@ package br.com.powerprogramers.atendimento.usecase.impl;
 import br.com.powerprogramers.atendimento.domain.Avaliacao;
 import br.com.powerprogramers.atendimento.domain.RegistrarAvaliacao;
 import br.com.powerprogramers.atendimento.domain.enums.StatusAtendimento;
+import br.com.powerprogramers.atendimento.exception.AtendimentoException;
 import br.com.powerprogramers.atendimento.exception.AtendimentoNaoFinalizadoException;
 import br.com.powerprogramers.atendimento.exception.AvaliacaoJaRealizadaException;
 import br.com.powerprogramers.atendimento.gateway.AtendimentoGateway;
@@ -21,11 +22,15 @@ public class AvaliarAtendimentoUseCaseImpl implements AvaliarAtendimentoUseCase 
 
     var atendimento = this.atendimentoGateway.getById(input.idAtendimento());
 
+    if (!atendimento.getIdPaciente().equals(input.idPaciente())) {
+      throw new AtendimentoException("Não pode avaliar esse atendimento!");
+    }
+
     if (!StatusAtendimento.FINALIZADO.equals(atendimento.getStatus())) {
       throw new AtendimentoNaoFinalizadoException();
     }
 
-    if (atendimento.getAvaliacao() != null) {
+    if (atendimento.getAvaliacao() != null && atendimento.getAvaliacao().nota() != null) {
       throw new AvaliacaoJaRealizadaException();
     }
 

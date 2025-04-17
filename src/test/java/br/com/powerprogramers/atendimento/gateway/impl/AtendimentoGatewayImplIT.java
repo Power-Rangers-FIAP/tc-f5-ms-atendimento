@@ -75,15 +75,17 @@ class AtendimentoGatewayImplIT {
 
     @Test
     void deveVerificarExistenciaDeAtendimentoEmAberto() {
+
+        Atendimento atendimento = Atendimento.builder().build();
         String idPaciente = "paciente123";
-        when(atendimentoRepository.existsByIdPacienteAndStatusNot(idPaciente, StatusAtendimento.FINALIZADO))
-                .thenReturn(true);
+        when(atendimentoRepository.findByIdPacienteAndStatusNot(idPaciente, StatusAtendimento.FINALIZADO))
+                .thenReturn(atendimento);
 
-        boolean exists = atendimentoGateway.existeAtendimentoAberto(idPaciente);
+        var existeAtendimentoAberto = atendimentoGateway.existeAtendimentoAberto(idPaciente);
 
-        assertTrue(exists);
+        assertNotNull(existeAtendimentoAberto);
         verify(atendimentoRepository, times(1))
-                .existsByIdPacienteAndStatusNot(idPaciente, StatusAtendimento.FINALIZADO);
+                .findByIdPacienteAndStatusNot(idPaciente, StatusAtendimento.FINALIZADO);
     }
 
     @Test

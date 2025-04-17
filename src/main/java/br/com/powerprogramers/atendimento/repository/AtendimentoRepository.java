@@ -1,5 +1,6 @@
 package br.com.powerprogramers.atendimento.repository;
 
+import br.com.powerprogramers.atendimento.domain.Atendimento;
 import br.com.powerprogramers.atendimento.domain.enums.StatusAtendimento;
 import br.com.powerprogramers.atendimento.entity.AtendimentoEntity;
 import org.springframework.data.domain.Page;
@@ -17,7 +18,7 @@ public interface AtendimentoRepository extends MongoRepository<AtendimentoEntity
   Page<AtendimentoEntity> findByIdMedicoAndStatusNot(
       Pageable pageable, String medicoId, StatusAtendimento status);
 
-  boolean existsByIdPacienteAndStatusNot(String pacienteId, StatusAtendimento status);
+  Atendimento findByIdPacienteAndStatusNot(String pacienteId, StatusAtendimento status);
 
   @Query("{ 'status' : ?0 }")
   List<AtendimentoEntity> findByStatus(StatusAtendimento status);

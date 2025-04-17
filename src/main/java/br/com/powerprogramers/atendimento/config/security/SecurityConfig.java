@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -23,9 +24,10 @@ public class SecurityConfig {
   private String jwkSetUri;
 
   private final JwtAuthConverter jwtAuthConverter;
+  private final UserValidationFilter userValidationFilter;
 
   private static final String[] PUBLIC_ENDPOINTS = {
-    "/swagger-ui/**", "/v3/api-docs/**", "/atendimento/login", "/atendimento/enfermidade",
+    "/swagger-ui/**", "/v3/api-docs/**", "/atendimento/login", "/atendimento/enfermidade", "/atendimento/avalicao"
   };
 
   @Bean
@@ -38,6 +40,7 @@ public class SecurityConfig {
                     .permitAll()
                     .anyRequest()
                     .authenticated())
+            .addFilterAfter(userValidationFilter, BearerTokenAuthenticationFilter.class)
         .oauth2ResourceServer(
             oauth2 ->
                 oauth2.jwt(
