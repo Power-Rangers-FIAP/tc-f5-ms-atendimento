@@ -1,6 +1,7 @@
 package br.com.powerprogramers.atendimento.controller;
 
 import br.com.powerprogramers.atendimento.api.AtendimentoApi;
+import br.com.powerprogramers.atendimento.domain.Role;
 import br.com.powerprogramers.atendimento.domain.dto.AvaliacaoPaginadaResponseDto;
 import br.com.powerprogramers.atendimento.domain.dto.AvaliacaoRequestDto;
 import br.com.powerprogramers.atendimento.domain.dto.EnfermidadeResponseDto;
@@ -27,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -101,6 +103,7 @@ public class AtendimentoController implements AtendimentoApi {
   }
 
   @Override
+  @PreAuthorize("hasAnyRole('" + Role.PATIENT +"')")
   public ResponseEntity<UnidadePaginadaResponseDto> iniciarAtendimento(
       Integer pagina, Integer porPagina) {
     log.info("Listando unidade para iniciar atendimento :: Inicio");
@@ -118,7 +121,6 @@ public class AtendimentoController implements AtendimentoApi {
   }
 
   @Override
-  //@PostAuthorize("hasAnyRole('" + Role.PATIENT + "', ' " + Role.DOCTOR + "')")
   public ResponseEntity<TokenResponseDto> realizaLogin(LoginRequestDto body) {
     log.info("Realizando login :: Inicio");
     var request = atendimentoMapper.toDomain(body);
@@ -128,6 +130,7 @@ public class AtendimentoController implements AtendimentoApi {
     return ResponseEntity.ok(tokenResponseDto);
   }
 
+  @PreAuthorize("hasAnyRole('" + Role.PATIENT +"')")
   @Override
   public ResponseEntity<RegistrarEnfermidadeResponseDto> registrarEnfermidade(
       RegistrarEnfermidadeRequestDto body) {

@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -26,7 +25,7 @@ public class SecurityConfig {
   private final JwtAuthConverter jwtAuthConverter;
 
   private static final String[] PUBLIC_ENDPOINTS = {
-    "/swagger-ui/**", "/v3/api-docs/**", "/atendimento/login"
+    "/swagger-ui/**", "/v3/api-docs/**", "/atendimento/login", "/atendimento/enfermidade",
   };
 
   @Bean

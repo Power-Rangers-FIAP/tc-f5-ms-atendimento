@@ -34,7 +34,7 @@ public class AtendimentoServiceImpl {
                 this.atendimentoRepository.save(atendimentoMapper.toEntity(atendimento));
             }
         }
-        log.info("Verificação de atendimentos atrasados :: Fim");
+        log.info("Verificando atendimentos atrasados :: Fim");
     }
 
 }
