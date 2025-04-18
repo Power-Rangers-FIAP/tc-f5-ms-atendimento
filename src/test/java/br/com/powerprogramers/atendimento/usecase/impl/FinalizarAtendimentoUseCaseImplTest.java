@@ -4,6 +4,7 @@ import br.com.powerprogramers.atendimento.domain.Atendimento;
 import br.com.powerprogramers.atendimento.domain.FinalizarAtendimento;
 import br.com.powerprogramers.atendimento.gateway.AtendimentoGateway;
 import br.com.powerprogramers.atendimento.gateway.ControleAtendimentoGateway;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -13,6 +14,8 @@ import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.*;
 
 class FinalizarAtendimentoUseCaseImplTest {
+
+    private AutoCloseable openMocks;
 
     @InjectMocks
     private FinalizarAtendimentoUseCaseImpl useCase;
@@ -25,13 +28,18 @@ class FinalizarAtendimentoUseCaseImplTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
         useCase = new FinalizarAtendimentoUseCaseImpl(atendimentoGateway, controleAtendimentoGateway);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        openMocks.close();
     }
 
     @Test
     void deveFinalizarAtendimentoComSucesso() {
-        FinalizarAtendimento input = new FinalizarAtendimento("1", "2", "muito bom");
+        FinalizarAtendimento input = new FinalizarAtendimento("1", "2", "muito bom", "DOCTOR");
         Atendimento atendimentoMock = mock(Atendimento.class);
 
         when(atendimentoGateway.getById(input.idAtendimento())).thenReturn(atendimentoMock);

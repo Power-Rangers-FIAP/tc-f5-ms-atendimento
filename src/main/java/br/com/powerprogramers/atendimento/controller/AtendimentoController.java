@@ -55,7 +55,7 @@ import java.util.List;
 @RequestMapping("atendimento")
 @RequiredArgsConstructor
 public class AtendimentoController {
-  //FIXME validar dados dos objetos.
+
   private static final AtendimentoMapper atendimentoMapper = AtendimentoMapper.INSTANCE;
   private final RealizarLoginUseCase realizarLoginUseCase;
   private final ConfirmarChegadaUseCase confirmarChegadaUseCase;
@@ -189,7 +189,6 @@ public class AtendimentoController {
   @Operation(summary = "Realiza o login", description = "Dado as credenciais de um usuario, retorna o token de acesso", tags={ "Atendimento" })
   @ApiResponses(value = {
           @ApiResponse(responseCode = "200", description = "Operação bem-sucedida", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenResponseDto.class))),
-
           @ApiResponse(responseCode = "401", description = "Não autorizado") })
   @PostMapping(value = "/login",
           produces = { MediaType.APPLICATION_JSON_VALUE },

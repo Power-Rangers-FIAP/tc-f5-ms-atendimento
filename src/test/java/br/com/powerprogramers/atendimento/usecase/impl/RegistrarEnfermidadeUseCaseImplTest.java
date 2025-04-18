@@ -46,7 +46,7 @@ class RegistrarEnfermidadeUseCaseImplTest {
         );
 
         // Atendimentos abertos não existem para o paciente
-        when(atendimentoGateway.existeAtendimentoAberto(idPaciente)).thenReturn(false);
+        when(atendimentoGateway.existeAtendimentoAberto(idPaciente)).thenReturn(null);
 
         // Retornar um número para unidade
         when(controleAtendimentoGateway.buscarNumero(idUnidade)).thenReturn(123);
@@ -99,7 +99,7 @@ class RegistrarEnfermidadeUseCaseImplTest {
                 List.of(new EnfermidadeRequest("1","Tosse"), new EnfermidadeRequest("2", "Febre"))
         );
 
-        when(atendimentoGateway.existeAtendimentoAberto(idPaciente)).thenReturn(true);
+        when(atendimentoGateway.existeAtendimentoAberto(idPaciente)).thenReturn(Atendimento.builder().build());
 
         // Act & Assert
         assertThrows(JaPossuiRegistroAtendimentoEmAbertoException.class, () -> {

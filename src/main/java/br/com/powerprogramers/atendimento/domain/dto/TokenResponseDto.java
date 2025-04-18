@@ -1,4 +1,7 @@
 package br.com.powerprogramers.atendimento.domain.dto;
 
-public record TokenResponseDto( String token) {
+import org.springframework.validation.annotation.Validated;
+
+@Validated
+public record TokenResponseDto(String token) {
 }

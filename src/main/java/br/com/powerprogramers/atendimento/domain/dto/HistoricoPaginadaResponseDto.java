@@ -1,9 +1,12 @@
 package br.com.powerprogramers.atendimento.domain.dto;
 
+import jakarta.validation.Valid;
 import lombok.Builder;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
 @Builder
-public record HistoricoPaginadaResponseDto(Integer pagina, Integer porPagina, Long total, List<HistoricoResponseDto> items) {
+@Validated
+public record HistoricoPaginadaResponseDto(Integer pagina, Integer porPagina, Long total, @Valid List<HistoricoResponseDto> items) {
 }
