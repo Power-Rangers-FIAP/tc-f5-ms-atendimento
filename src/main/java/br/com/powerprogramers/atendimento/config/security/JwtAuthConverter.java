@@ -44,6 +44,7 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
     }
   }
 
+  @SuppressWarnings("unchecked")
   private void extractResourceAccessRoles(Jwt jwt, Set<GrantedAuthority> authorities) {
     Map<String, Object> resourceAccess = jwt.getClaimAsMap(RESOURCE_ACCESS_CLAIM);
     if (resourceAccess != null) {

@@ -20,6 +20,7 @@ import br.com.powerprogramers.atendimento.domain.dto.RegistrarEnfermidadeRequest
 import br.com.powerprogramers.atendimento.domain.dto.RegistrarEnfermidadeResponseDto;
 import br.com.powerprogramers.atendimento.domain.dto.TokenResponseDto;
 import br.com.powerprogramers.atendimento.domain.dto.UnidadeResponseDto;
+import br.com.powerprogramers.atendimento.domain.dto.UserInfoDTO;
 import br.com.powerprogramers.atendimento.domain.enums.Enfermidade;
 import br.com.powerprogramers.atendimento.entity.AtendimentoEntity;
 import br.com.powerprogramers.atendimento.entity.ControleAtendimentoEntity;
@@ -38,13 +39,17 @@ public interface AtendimentoMapper {
 
   Login toDomain(LoginRequestDto dto);
 
-  RegistrarAvaliacao toDomain(AvaliacaoRequestDto dto);
+  @Mapping(target = "idPaciente", expression = "java(userInfoDTO.getUserId())")
+  RegistrarAvaliacao toDomain(AvaliacaoRequestDto dto, UserInfoDTO userInfoDTO);
 
-  FinalizarAtendimento toDomain(FinalizarAtendimentoRequestDto dto);
+  @Mapping(target = "idMedico", expression = "java(userInfoDTO.getUserId())")
+  @Mapping(target = "userType", expression = "java(userInfoDTO.getUserType())")
+  FinalizarAtendimento toDomain(FinalizarAtendimentoRequestDto dto, UserInfoDTO userInfoDTO);
 
   ConsultarHistorico toDomain(int pagina, int porPagina, String idPaciente, String idMedico);
 
-  RegistrarAtendimento toDomain(RegistrarEnfermidadeRequestDto dto);
+  @Mapping(target = "idPaciente", expression = "java(idPaciente)")
+  RegistrarAtendimento toDomain(RegistrarEnfermidadeRequestDto dto, String idPaciente);
 
   Atendimento toDomain(AtendimentoEntity entity);
 

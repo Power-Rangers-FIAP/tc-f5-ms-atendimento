@@ -40,7 +40,7 @@ class RegistrarEnfermidadeUseCaseImplIT {
                 List.of(new EnfermidadeRequest("1","Febre"), new EnfermidadeRequest("2", "Dor de Cabeça"))
         );
 
-        when(atendimentoGateway.existeAtendimentoAberto(idPaciente)).thenReturn(false);
+        when(atendimentoGateway.existeAtendimentoAberto(idPaciente)).thenReturn(null);
         when(controleAtendimentoGateway.buscarNumero(idUnidade)).thenReturn(10);
 
         Atendimento atendimentoEsperado = Atendimento.iniciarAtendimento(registrarAtendimento);
@@ -83,7 +83,7 @@ class RegistrarEnfermidadeUseCaseImplIT {
                 List.of(new EnfermidadeRequest("1","Febre"), new EnfermidadeRequest("2", "Dor de Cabeça"))
         );
 
-        when(atendimentoGateway.existeAtendimentoAberto(idPaciente)).thenReturn(true);
+        when(atendimentoGateway.existeAtendimentoAberto(idPaciente)).thenReturn(Atendimento.builder().build());
 
         assertThrows(JaPossuiRegistroAtendimentoEmAbertoException.class, () -> {
             useCase.execute(registrarAtendimento);

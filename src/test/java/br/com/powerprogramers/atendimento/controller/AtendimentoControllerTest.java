@@ -1,11 +1,19 @@
 package br.com.powerprogramers.atendimento.controller;
 
 import br.com.powerprogramers.atendimento.domain.Token;
-import br.com.powerprogramers.atendimento.domain.dto.*;
+import br.com.powerprogramers.atendimento.domain.dto.AvaliacaoRequestDto;
+import br.com.powerprogramers.atendimento.domain.dto.EnfermidadeResponseDto;
+import br.com.powerprogramers.atendimento.domain.dto.FinalizarAtendimentoRequestDto;
+import br.com.powerprogramers.atendimento.domain.dto.LoginRequestDto;
+import br.com.powerprogramers.atendimento.domain.dto.TokenResponseDto;
+import br.com.powerprogramers.atendimento.domain.dto.UserInfoDTO;
 import br.com.powerprogramers.atendimento.domain.enums.Enfermidade;
-import br.com.powerprogramers.atendimento.mapper.AtendimentoMapper;
-import br.com.powerprogramers.atendimento.usecase.*;
+import br.com.powerprogramers.atendimento.usecase.AvaliarAtendimentoUseCase;
+import br.com.powerprogramers.atendimento.usecase.ConfirmarChegadaUseCase;
+import br.com.powerprogramers.atendimento.usecase.FinalizarAtendimentoUseCase;
+import br.com.powerprogramers.atendimento.usecase.RealizarLoginUseCase;
 import org.apache.commons.lang3.EnumUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,11 +22,18 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class AtendimentoControllerTest {
+
+    private AutoCloseable openMocks;
 
     @InjectMocks
     private AtendimentoController atendimentoController;
@@ -37,17 +52,23 @@ class AtendimentoControllerTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        this.openMocks = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        this.openMocks.close();
     }
 
     @Test
     void avaliarAtendimento_DeveRetornarAccepted() {
-        AvaliacaoRequestDto requestDto = new AvaliacaoRequestDto();
+        UserInfoDTO userInfoDTO = UserInfoDTO.builder().userId("557fa359-564b-426a-b6cf-038753102f4a").build();
+        AvaliacaoRequestDto requestDto = AvaliacaoRequestDto.builder().build();
         doNothing().when(avaliarAtendimentoUseCase).execute(any());
 
-        ResponseEntity<Void> response = atendimentoController.avaliarAtendimento(requestDto);
+        ResponseEntity<Void> response = atendimentoController.avaliarAtendimento(userInfoDTO, requestDto);
 
-        assertEquals(202, response.getStatusCodeValue());
+        assertEquals(202, response.getStatusCode().value());
         verify(avaliarAtendimentoUseCase, times(1)).execute(any());
     }
 
@@ -58,7 +79,7 @@ class AtendimentoControllerTest {
 
         ResponseEntity<Void> response = atendimentoController.confirmarChegada(idAtendimento);
 
-        assertEquals(202, response.getStatusCodeValue());
+        assertEquals(202, response.getStatusCode().value());
         verify(confirmarChegadaUseCase, times(1)).execute(idAtendimento);
     }
 
@@ -68,30 +89,31 @@ class AtendimentoControllerTest {
 
         ResponseEntity<List<EnfermidadeResponseDto>> response = atendimentoController.consultarEnfermidade();
 
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(enfermidades.size(), response.getBody().size());
+        assertEquals(200, response.getStatusCode().value());
+        assertEquals(enfermidades.size(), Objects.requireNonNull(response.getBody()).size());
     }
 
     @Test
     void finalizarAtendimento_DeveRetornarAccepted() {
-        FinalizarAtendimentoRequestDto requestDto = new FinalizarAtendimentoRequestDto();
+        UserInfoDTO userInfoDTO = UserInfoDTO.builder().userId("27b1d80d-387c-47e7-8ef3-4824056d6143").build();
+        FinalizarAtendimentoRequestDto requestDto = FinalizarAtendimentoRequestDto.builder().build();
         doNothing().when(finalizarAtendimentoUseCase).execute(any());
 
-        ResponseEntity<Void> response = atendimentoController.finalizarAtendimento(requestDto);
+        ResponseEntity<Void> response = atendimentoController.finalizarAtendimento(userInfoDTO, requestDto);
 
-        assertEquals(202, response.getStatusCodeValue());
+        assertEquals(202, response.getStatusCode().value());
         verify(finalizarAtendimentoUseCase, times(1)).execute(any());
     }
 
     @Test
     void realizaLogin_DeveRetornarTokenResponseDto() {
-        LoginRequestDto requestDto = new LoginRequestDto();
+        LoginRequestDto requestDto = LoginRequestDto.builder().build();
         Token tokenResponseDto = new Token("token123");
         when(realizarLoginUseCase.execute(any())).thenReturn(tokenResponseDto);
 
         ResponseEntity<TokenResponseDto> response = atendimentoController.realizaLogin(requestDto);
 
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(200, response.getStatusCode().value());
         verify(realizarLoginUseCase, times(1)).execute(any());
     }
 }

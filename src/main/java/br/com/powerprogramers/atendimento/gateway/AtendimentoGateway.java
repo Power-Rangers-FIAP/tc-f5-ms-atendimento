@@ -11,7 +11,7 @@ public interface AtendimentoGateway {
 
   Atendimento save(Atendimento atendimento);
 
-  boolean existeAtendimentoAberto(String idAtendimento);
+  Atendimento existeAtendimentoAberto(String idPaciente);
 
   Page<Atendimento> consultarHistorico(ConsultarHistorico input);
 

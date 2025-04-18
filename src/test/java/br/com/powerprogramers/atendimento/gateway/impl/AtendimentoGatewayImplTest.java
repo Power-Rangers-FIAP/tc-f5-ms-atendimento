@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import java.util.Collections;
 import java.util.Optional;
 
+import static org.bson.assertions.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -42,7 +43,7 @@ class AtendimentoGatewayImplTest {
 
         Atendimento result = atendimentoGateway.getById(idAtendimento);
 
-        assertNotNull(result);
+        org.junit.jupiter.api.Assertions.assertNotNull(result);
         verify(atendimentoRepository, times(1)).findById(idAtendimento);
     }
 
@@ -64,21 +65,22 @@ class AtendimentoGatewayImplTest {
 
         Atendimento result = atendimentoGateway.save(atendimento);
 
-        assertNotNull(result);
+        org.junit.jupiter.api.Assertions.assertNotNull(result);
         verify(atendimentoRepository, times(1)).save(any(AtendimentoEntity.class));
     }
 
     @Test
     void deveVerificarExistenciaDeAtendimentoEmAberto() {
+        Atendimento atendimento = Atendimento.builder().build();
         String idPaciente = "paciente123";
-        when(atendimentoRepository.existsByIdPacienteAndStatusNot(idPaciente, StatusAtendimento.FINALIZADO))
-                .thenReturn(true);
+        when(atendimentoRepository.findByIdPacienteAndStatusNot(idPaciente, StatusAtendimento.FINALIZADO))
+                .thenReturn(atendimento);
 
-        boolean exists = atendimentoGateway.existeAtendimentoAberto(idPaciente);
+        var existsAtendimento = atendimentoGateway.existeAtendimentoAberto(idPaciente);
 
-        assertTrue(exists);
+        assertNotNull(existsAtendimento);
         verify(atendimentoRepository, times(1))
-                .existsByIdPacienteAndStatusNot(idPaciente, StatusAtendimento.FINALIZADO);
+                .findByIdPacienteAndStatusNot(idPaciente, StatusAtendimento.FINALIZADO);
     }
 
     @Test
@@ -94,7 +96,7 @@ class AtendimentoGatewayImplTest {
 
         Page<Atendimento> result = atendimentoGateway.consultarHistorico(input);
 
-        assertNotNull(result);
+        org.junit.jupiter.api.Assertions.assertNotNull(result);
         assertEquals(1, result.getTotalElements());
         verify(atendimentoRepository, times(1))
                 .findByIdPacienteAndStatusNot(pageRequest, input.idPaciente(), StatusAtendimento.ABERTO);
@@ -113,7 +115,7 @@ class AtendimentoGatewayImplTest {
 
         Page<Atendimento> result = atendimentoGateway.consultarHistorico(input);
 
-        assertNotNull(result);
+        org.junit.jupiter.api.Assertions.assertNotNull(result);
         assertEquals(1, result.getTotalElements());
         verify(atendimentoRepository, times(1))
                 .findByIdMedicoAndStatusNot(pageRequest, input.idMedico(), StatusAtendimento.ABERTO);

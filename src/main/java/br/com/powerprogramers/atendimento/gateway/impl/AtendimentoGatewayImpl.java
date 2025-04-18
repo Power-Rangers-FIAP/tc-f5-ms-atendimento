@@ -44,9 +44,9 @@ public class AtendimentoGatewayImpl implements AtendimentoGateway {
   }
 
   @Override
-  public boolean existeAtendimentoAberto(String idAtendimento) {
-    return this.atendimentoRepository.existsByIdPacienteAndStatusNot(
-        idAtendimento, StatusAtendimento.FINALIZADO);
+  public Atendimento existeAtendimentoAberto(String idPaciente) {
+    return this.atendimentoRepository.findByIdPacienteAndStatusNot(
+        idPaciente, StatusAtendimento.FINALIZADO);
   }
 
   @Override

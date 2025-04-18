@@ -50,6 +50,19 @@ Projeto de pós-graduação em **arquitetura e desenvolvimento JAVA** pela FIAP 
 │   │                   └── impl                // Implementação Caso de uso
 ```
 
+## ⚙️ Configurando Variáveis de Ambiente
+
+Deve-se criar um arquivo .env na raiz do projeto contendo as variáveis:
+
+| Variável | Descrição                 | Exemplo         |
+| --- |---------------------------|-----------------|
+| `DB_USER` | Usuário do servidor atals | `usuari123`     |
+| `DB_PASSWORD` | Senha do usuário do atlas | `senha123`      |
+| `KEYCLOAK_SECRET` | Chave do Keycloak         | `minhasenha123` |
+
+Essas variáveis vão ser fornecidas no arquivo de entrega do projeto, se não tiver acesso, pode criar seu proprio banco de dados no MongoDB Atlas e criar um usuário com as permissões necessárias.
+E configurar o Keycloak para gerar o token de autenticação.
+
 ## ▶️ Como Executar o Projeto
 
 Para executar o projeto localmente, siga as etapas abaixo:
@@ -61,7 +74,7 @@ Para executar o projeto localmente, siga as etapas abaixo:
     
     ```
 
-2. **Navegue ate o diretorio do projeto:**
+2. **Navegue até o diretorio do projeto:**
 
     ```bash
     cd tc-f5-ms-atendimento
@@ -94,34 +107,20 @@ Para executar o projeto localmente, siga as etapas abaixo:
 - **Para testes de integração:**
 
     ```bash
-    mvn test -P integration-text
-    
-    ``` 
-
-- **Para testes de performance:**
-
-  > Com o Docker rodando, execute o comando:
-
-    ```bash
-    mvn gatling:test -P performance-test
+    mvn test -P integration-test
     
     ``` 
 
 - **Para testes de sistema:**
 
     ```bash
-    mvn test -P system-text
+    mvn test -P system-test
     
     ```
-  
-## 📄 Relatório de Performance
-
-Apos execução do teste de performance, você pode relatorio da execução abrindo o arquivo index.html como `target/gatling/performancesimulation-\<dataexecução>/index.html`
-Exemplo do caminho: `target/gatling/performancesimulation-20241209162646899/index.html`
 
 ## 🧪 API Endpoint
 
-A API pode ser executada e testada usando o Swagger. A documentação esta disponivel na URL:
+A API pode ser executada e testada usando o Swagger. A documentação está disponivel na URL:
 [`Swagger`](http://localhost:8081/swagger-ui/index.html)
 
 ## Contribuindo
